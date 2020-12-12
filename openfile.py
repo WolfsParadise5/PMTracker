@@ -1,11 +1,12 @@
 #Import required modules
 import csv
 import os.path
+import time
 from requests_html import HTMLSession
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from pathlib import Path
-from datetime import time
+from datetime import date
 
 def MainScreen():
     
@@ -53,7 +54,7 @@ def Switch(option):
             print("File already exists")
 
     elif option == 4:
-        pass
+        AutoMaker()
 
 
 def GetData():
@@ -161,6 +162,49 @@ def CheckDifference():
         print("Fund {}({}): RM{}".format(fundlist[j], fundShortForm[j], differencelist[j]))
 
     print("  ")
+    input("Enter to continue. ")
+
+def AutoMaker():
+
+    def MenuOption():
+        time = date.today().strftime("%d/%m/%Y")
+        
+        print("Today is {}".format(time))
+        
+        print(" ")
+        print("How would you like your automation to be saved?")
+        
+        print(" ")
+        print("1. Daily")
+        print("2. Weekly")
+        print("3. Monthly")
+        print(" ")
+
+        saveOption = 1
+        while saveOption < 1 or saveOption > 3: 
+            
+            saveOption = int(input("Enter option: "))
+            if saveOption < 1 or saveOption > 3:
+                print("Invalid input, please try again")
+            else:
+                return saveOption
+    
+    saveOption = MenuOption()
+    
+    if saveOption == 1:
+        listsave = ["D", time.time(),'86400']
+
+    elif saveOption == 2:
+        listsave = ["W", time.time(),'604800']
+
+    elif saveOption == 3:
+        listsave = ["M", time.time()]
+        nexttime = 18144000 #30days
+
+        #Number of days based of months
+        
+
+    
     input("Enter to continue. ")
 
 #Check for auto-check setting
