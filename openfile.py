@@ -232,7 +232,38 @@ def AutoMaker():
 if os.path.exists('auto.sav'):
     print("Checking recent changes...")
 
+def AutoMateChecker():
+    
+    if os.path.exists('savefile.json'):
+        print("JSON File Detected, continuing automation...")
+
+        currenttime = time.time()
+        #Open the JSON File
+        with open("savefile.json", "r") as savefile:
+            jsonlist = json.load(savefile)
+            
+            frequency = jsonlist[0]['Frequency']
+            prevTime = float(jsonlist[0]['time'])
+            nextTime = float(jsonlist[0]['next_timein'])
+
+
+        totalNextTime = prevTime + nextTime
+        while time.time() < totalNextTime:
+            time.sleep(10)
+
+        if time.time() >= totalNextTime:
+            print("Refreshing CSV File...")
+            CreateCSVFile()
+
+        time.sleep(3)
+
+    else:
+        print("Automation is not set, proceeding...")
+        print("   ")
+        time.sleep(3)
+
 option = 0
+AutoMateChecker()
 while option != 5:
     option = MainScreen()
     Switch(option)
