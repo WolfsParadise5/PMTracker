@@ -2,6 +2,7 @@
 import csv
 import os.path
 import time
+import json
 from requests_html import HTMLSession
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -180,7 +181,7 @@ def AutoMaker():
         print("3. Monthly")
         print(" ")
 
-        saveOption = 1
+        saveOption = 5
         while saveOption < 1 or saveOption > 3: 
             
             saveOption = int(input("Enter option: "))
@@ -188,22 +189,42 @@ def AutoMaker():
                 print("Invalid input, please try again")
             else:
                 return saveOption
-    
+
+
     saveOption = MenuOption()
     
+    currentTime = time.time()
     if saveOption == 1:
-        listsave = ["D", time.time(),'86400']
+        listsave = ["D",str(currentTime),'86400']
+
 
     elif saveOption == 2:
-        listsave = ["W", time.time(),'604800']
+        listsave = ["W",str(currentTime),'604800']
 
     elif saveOption == 3:
-        listsave = ["M", time.time()]
+        listsave = ["M", str(currentTime)]
         nexttime = 18144000 #30days
 
         #Number of days based of months
-        
+        currentMonth = time[3:5]
 
+        if currentMonth == "01" or currentMonth == "03" or currentMonth == "05" or currentMonth == "07" or currentMonth == "08" or currentMonth == "10" or currentMonth == "12":
+            nexttime = 2678400
+
+        elif currentMonth == "02":
+            nexttime = 2419200
+        
+        elif currentMonth == "04" or currentMonth == "06" or currentMonth == "09" or currentMonth == "11":
+            nexttime = 2592000
+
+        listsave.append(str(2592000))
+
+    #Save the save list into another file
+    listvalues = ["Frequency", "time", "next_timein"]
+    listdict = dict(zip(listvalues, listsave))
+        
+    with open("savefile.json", 'w') as f:        
+        json.dump([listdict], f)
     
     input("Enter to continue. ")
 
